@@ -1,0 +1,37 @@
+kind: Deployment
+apiVersion: extensions/v1beta1
+metadata:
+  name: vision-backend-dev
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: vision
+      labels:
+        app: vision
+        role: backend
+        env: dev
+    spec:
+      containers:
+        - name: vision
+          image: DOCKER_IMAGE
+          ports:
+            - name: http
+              containerPort: 8080
+          env:
+            - name: DOWNLOADS_LOCATION
+              value: "/app/downloads"
+            - name: SERVICE_ACCOUNT
+              value: "/service-account/fsworker-service-account.json"
+          volumeMounts:
+            - name: images-store
+              mountPath: /app/downloads
+            - name: service-account
+              mountPath: /service-account
+      volumes:
+        - name: images-store
+          persistentVolumeClaim:
+            claimName: shared-images-store
+        - name: service-account
+          secret:
+            secretName: fsworker-service-account
