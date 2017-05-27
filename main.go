@@ -41,7 +41,7 @@ func handler (w http.ResponseWriter, req *http.Request) {
     }
 
     // Sets the name of the image file to annotate.
-    filename = fmt.Sprintf("%s/%s", os.Getenv("DOWNLOADS_LOCATION"), img.Original_file)
+    filename := fmt.Sprintf("%s/%s", os.Getenv("DOWNLOADS_LOCATION"), img.Original_file)
     file, err := os.Open(filename)
     if err != nil {
             log.Fatalf("Failed to read file: %v", err)
